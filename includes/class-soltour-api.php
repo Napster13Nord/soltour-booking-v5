@@ -1684,21 +1684,50 @@ class Soltour_API {
         $accommodation = isset($budget['accommodation']) ? $budget['accommodation'][0] : array();
         $priceInfo = isset($budget['priceInfo']) ? $budget['priceInfo'] : array();
 
-        // Extrair informações de voos (corrigido: flightServices é um array)
-        $flight_services = isset($budget['flightServices']) ? $budget['flightServices'] : array();
+        // DEBUG: Log da estrutura completa para entender o formato
+        $this->log('=== DEBUG EMAIL AGÊNCIA - ESTRUTURA DE VOOS ===');
+        $this->log('Budget keys: ' . implode(', ', array_keys($budget)));
+
+        // Tentar múltiplas possíveis localizações dos voos
+        $flight_services = array();
+
+        if (isset($budget['flightServices'])) {
+            $this->log('Encontrado flightServices em budget');
+            $flight_services = $budget['flightServices'];
+        } elseif (isset($budget['flights'])) {
+            $this->log('Encontrado flights em budget');
+            $flight_services = $budget['flights'];
+        } elseif (isset($budget['budget']) && isset($budget['budget']['flightServices'])) {
+            $this->log('Encontrado flightServices em budget.budget');
+            $flight_services = $budget['budget']['flightServices'];
+        }
+
+        $this->log('Flight services count: ' . (is_array($flight_services) ? count($flight_services) : '0 (não é array)'));
+        if (!empty($flight_services) && is_array($flight_services)) {
+            $this->log('First flight service structure: ' . json_encode(array_slice($flight_services, 0, 1), JSON_UNESCAPED_UNICODE));
+        }
+
+        // Extrair informações de voos
         $outbound_flight = null;
         $inbound_flight = null;
 
         // Procurar voos de ida e volta no array
-        foreach ($flight_services as $flight) {
-            if (isset($flight['type'])) {
-                if ($flight['type'] === 'OUTBOUND') {
-                    $outbound_flight = $flight;
-                } elseif ($flight['type'] === 'INBOUND') {
-                    $inbound_flight = $flight;
+        if (is_array($flight_services)) {
+            foreach ($flight_services as $flight) {
+                if (isset($flight['type'])) {
+                    $this->log('Voo encontrado com type: ' . $flight['type']);
+                    if ($flight['type'] === 'OUTBOUND') {
+                        $outbound_flight = $flight;
+                    } elseif ($flight['type'] === 'INBOUND') {
+                        $inbound_flight = $flight;
+                    }
                 }
             }
         }
+
+        $this->log('Outbound flight: ' . ($outbound_flight ? 'ENCONTRADO' : 'NÃO ENCONTRADO'));
+        $this->log('Inbound flight: ' . ($inbound_flight ? 'ENCONTRADO' : 'NÃO ENCONTRADO'));
+        $this->log('=== FIM DEBUG ===');
 
         ob_start();
         ?>
