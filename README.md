@@ -1,4 +1,4 @@
-# Soltour Booking V4 - Plugin WordPress
+# Soltour Booking V5 - Plugin WordPress
 
 ![Version](https://img.shields.io/badge/version-4.1.0-blue.svg)
 ![WordPress](https://img.shields.io/badge/WordPress-5.8+-brightgreen.svg)
