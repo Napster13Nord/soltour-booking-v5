@@ -1688,9 +1688,40 @@ class Soltour_API {
         $this->log('=== DEBUG EMAIL AGÊNCIA - ESTRUTURA DE VOOS ===');
         $this->log('Budget keys: ' . implode(', ', array_keys($budget)));
 
-        // Verificar se existe flightData
-        if (isset($budget['flightData'])) {
-            $this->log('FlightData encontrado! Estrutura: ' . json_encode($budget['flightData'], JSON_UNESCAPED_UNICODE));
+        // === CORREÇÃO: Verificar flightData no nível raiz ===
+        $outbound_flight = null;
+        $inbound_flight = null;
+
+        // Primeiro, tentar extrair do flightData (estrutura usada pelo JavaScript)
+        if (isset($budget['flightData']) && !empty($budget['flightData'])) {
+            $this->log('Encontrado flightData no nível raiz do budget');
+
+            // Extrair voo de ida (outbound)
+            if (isset($budget['flightData']['outboundSegments']) && !empty($budget['flightData']['outboundSegments'])) {
+                $outbound_flight = array(
+                    'segments' => $budget['flightData']['outboundSegments']
+                );
+                $this->log('Voo de ida extraído do flightData: ' . count($budget['flightData']['outboundSegments']) . ' segmentos');
+            }
+
+            // Extrair voo de volta (inbound)
+            if (isset($budget['flightData']['returnSegments']) && !empty($budget['flightData']['returnSegments'])) {
+                $inbound_flight = array(
+                    'segments' => $budget['flightData']['returnSegments']
+                );
+                $this->log('Voo de volta extraído do flightData: ' . count($budget['flightData']['returnSegments']) . ' segmentos');
+            }
+        }
+
+        // Se já encontrou os voos, não precisa procurar em outros lugares
+        if ($outbound_flight && $inbound_flight) {
+            $this->log('Voos encontrados com sucesso no flightData!');
+            $this->log('Outbound flight: ENCONTRADO');
+            $this->log('Inbound flight: ENCONTRADO');
+            $this->log('=== FIM DEBUG ===');
+        } else {
+            // Se não encontrou, continua com a busca original em flight_services
+            $this->log('FlightData não disponível, tentando métodos alternativos...');
         }
 
         // Tentar múltiplas possíveis localizações dos voos
@@ -1730,38 +1761,6 @@ class Soltour_API {
             $this->log('First flight service structure: ' . json_encode(array_slice($flight_services, 0, 1), JSON_UNESCAPED_UNICODE));
         }
 
-        // Extrair informações de voos
-        $outbound_flight = null;
-        $inbound_flight = null;
-
-        // Primeiro tentar buscar direto do flightData (se existir)
-        if (isset($budget['flightData'])) {
-            $this->log('Tentando extrair voos de flightData');
-
-            // Verificar diferentes estruturas possíveis
-            if (isset($budget['flightData']['outbound'])) {
-                $outbound_flight = $budget['flightData']['outbound'];
-                $this->log('Voo de ida encontrado em flightData.outbound');
-            } elseif (isset($budget['flightData']['OUTBOUND'])) {
-                $outbound_flight = $budget['flightData']['OUTBOUND'];
-                $this->log('Voo de ida encontrado em flightData.OUTBOUND');
-            } elseif (isset($budget['flightData'][0])) {
-                $outbound_flight = $budget['flightData'][0];
-                $this->log('Voo de ida encontrado em flightData[0]');
-            }
-
-            if (isset($budget['flightData']['inbound'])) {
-                $inbound_flight = $budget['flightData']['inbound'];
-                $this->log('Voo de volta encontrado em flightData.inbound');
-            } elseif (isset($budget['flightData']['INBOUND'])) {
-                $inbound_flight = $budget['flightData']['INBOUND'];
-                $this->log('Voo de volta encontrado em flightData.INBOUND');
-            } elseif (isset($budget['flightData'][1])) {
-                $inbound_flight = $budget['flightData'][1];
-                $this->log('Voo de volta encontrado em flightData[1]');
-            }
-        }
-
         // Se não encontrou no flightData, tentar no array de flight_services
         if (!$outbound_flight && !$inbound_flight && is_array($flight_services)) {
             $this->log('Procurando voos em flight_services');
@@ -1790,10 +1789,6 @@ class Soltour_API {
                 }
             }
         }
-
-        $this->log('Outbound flight: ' . ($outbound_flight ? 'ENCONTRADO' : 'NÃO ENCONTRADO'));
-        $this->log('Inbound flight: ' . ($inbound_flight ? 'ENCONTRADO' : 'NÃO ENCONTRADO'));
-        $this->log('=== FIM DEBUG ===');
 
         ob_start();
         ?>
