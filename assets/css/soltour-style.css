@@ -427,7 +427,7 @@
 
 .slider-image {
     width: 100%;
-    height: 100%;
+    height: 100% !important;
     object-fit: cover;
     object-position: center;
     display: block;
@@ -442,6 +442,14 @@
 .slider-image.active {
     opacity: 1;
     pointer-events: auto;
+}
+
+/* Garantir que prevaleça sobre CSS do Elementor */
+.soltour-package-card .slider-image,
+.soltour-package-card .slider-image.active,
+.soltour-package-card .package-image img {
+    height: 100% !important;
+    max-width: 100% !important;
 }
 
 /* Botões do Slider */
@@ -522,7 +530,7 @@
 
 .package-image img {
     width: 100%;
-    height: 100%;
+    height: 100% !important;
     object-fit: cover;
     object-position: center;
     display: block;
