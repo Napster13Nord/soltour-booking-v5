@@ -376,14 +376,13 @@
     overflow: hidden;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: grid;
-    grid-template-columns: 1fr 45%;
+    grid-template-columns: 320px 1fr;
     grid-template-rows: 1fr auto;
     cursor: pointer;
     position: relative;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    min-height: 500px;
 }
 
 .soltour-package-card:hover {
@@ -416,9 +415,8 @@
 .package-image-slider {
     grid-column: 1;
     grid-row: 1 / -1;
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
+    width: 320px;
+    height: 320px;
     position: relative;
     overflow: hidden;
     background: #f0f0f0;
@@ -576,10 +574,9 @@
 .package-info {
     grid-column: 2;
     grid-row: 1;
-    padding: 30px;
+    padding: 24px 30px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 .package-location {
@@ -1155,7 +1152,6 @@
         margin: 0;
         grid-template-columns: 1fr;
         grid-template-rows: auto auto auto;
-        min-height: auto;
     }
 
     .soltour-package-card:hover {
@@ -1163,15 +1159,18 @@
     }
 
     .package-image {
+        grid-column: 1;
+        grid-row: 1;
         height: 200px;
+        width: 100%;
     }
 
     /* CORREÇÃO: Slider de imagens no mobile */
     .package-image-slider {
         grid-column: 1;
         grid-row: 1;
+        width: 100%;
         height: 200px;
-        min-height: 200px;
     }
 
     /* Garantir que imagens preencham todo o container */
@@ -1500,12 +1499,11 @@
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: grid;
-    grid-template-columns: 45% 1fr;
+    grid-template-columns: 320px 1fr;
     grid-template-rows: 1fr auto;
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    min-height: 500px;
 }
 
 .soltour-package-card:hover {
@@ -1516,9 +1514,8 @@
 .soltour-package-card .package-image {
     grid-column: 1;
     grid-row: 1 / -1;
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
+    width: 320px;
+    height: 320px;
     overflow: hidden;
     position: relative;
     background: #f0f0f0;
@@ -1548,10 +1545,9 @@
 .soltour-package-card .package-info {
     grid-column: 2;
     grid-row: 1;
-    padding: 30px;
+    padding: 24px 30px;
     display: flex;
     flex-direction: column;
-    overflow-y: auto;
 }
 
 .soltour-package-card h3.package-name {
