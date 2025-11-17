@@ -1688,6 +1688,11 @@ class Soltour_API {
         $this->log('=== DEBUG EMAIL AGÊNCIA - ESTRUTURA DE VOOS ===');
         $this->log('Budget keys: ' . implode(', ', array_keys($budget)));
 
+        // Verificar se existe flightData
+        if (isset($budget['flightData'])) {
+            $this->log('FlightData encontrado! Estrutura: ' . json_encode($budget['flightData'], JSON_UNESCAPED_UNICODE));
+        }
+
         // Tentar múltiplas possíveis localizações dos voos
         $flight_services = array();
 
@@ -1729,8 +1734,37 @@ class Soltour_API {
         $outbound_flight = null;
         $inbound_flight = null;
 
-        // Procurar voos de ida e volta no array
-        if (is_array($flight_services)) {
+        // Primeiro tentar buscar direto do flightData (se existir)
+        if (isset($budget['flightData'])) {
+            $this->log('Tentando extrair voos de flightData');
+
+            // Verificar diferentes estruturas possíveis
+            if (isset($budget['flightData']['outbound'])) {
+                $outbound_flight = $budget['flightData']['outbound'];
+                $this->log('Voo de ida encontrado em flightData.outbound');
+            } elseif (isset($budget['flightData']['OUTBOUND'])) {
+                $outbound_flight = $budget['flightData']['OUTBOUND'];
+                $this->log('Voo de ida encontrado em flightData.OUTBOUND');
+            } elseif (isset($budget['flightData'][0])) {
+                $outbound_flight = $budget['flightData'][0];
+                $this->log('Voo de ida encontrado em flightData[0]');
+            }
+
+            if (isset($budget['flightData']['inbound'])) {
+                $inbound_flight = $budget['flightData']['inbound'];
+                $this->log('Voo de volta encontrado em flightData.inbound');
+            } elseif (isset($budget['flightData']['INBOUND'])) {
+                $inbound_flight = $budget['flightData']['INBOUND'];
+                $this->log('Voo de volta encontrado em flightData.INBOUND');
+            } elseif (isset($budget['flightData'][1])) {
+                $inbound_flight = $budget['flightData'][1];
+                $this->log('Voo de volta encontrado em flightData[1]');
+            }
+        }
+
+        // Se não encontrou no flightData, tentar no array de flight_services
+        if (!$outbound_flight && !$inbound_flight && is_array($flight_services)) {
+            $this->log('Procurando voos em flight_services');
             foreach ($flight_services as $flight) {
                 // Tentar diferentes possíveis campos para identificar o tipo de voo
                 $flight_type = null;
