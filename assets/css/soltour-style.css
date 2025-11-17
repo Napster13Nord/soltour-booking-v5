@@ -800,7 +800,7 @@
 }
 
 .pagination-arrow {
-    display: flex !important;
+    display: contents !important;
     align-items: center !important;
     justify-content: center !important;
     width: 45px !important;
@@ -2321,3 +2321,4 @@
         font-size: 12px;
     }
 }
+
