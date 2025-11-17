@@ -230,15 +230,15 @@ class Soltour_Shortcodes {
                     <?php _e('Encontraremos os melhores resultados para sua busca', 'soltour-booking'); ?>
                 </p>
 
-                <!-- Mensagem de tempo de espera -->
-                <p class="loading-time-info" style="color: #6b7280; font-size: 14px; margin-top: 10px; margin-bottom: 20px;">
-                    <?php _e('O processo pode demorar entre 30 e 45 segundos, aguarde', 'soltour-booking'); ?>
-                </p>
-
                 <!-- Barra de Progresso -->
                 <div class="progress-container">
                     <div class="progress-bar"></div>
                 </div>
+
+                <!-- Mensagem de tempo de espera -->
+                <p class="loading-time-info" style="display: none; color: #6b7280; font-size: 14px; margin-top: 20px; margin-bottom: 0;">
+                    <?php _e('O processo pode demorar entre 30 e 45 segundos, aguarde', 'soltour-booking'); ?>
+                </p>
             </div>
         </div>
         <?php
