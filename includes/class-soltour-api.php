@@ -1682,12 +1682,23 @@ class Soltour_API {
         // Extrair dados do budget_data_completo
         $budget = isset($data['budget_data_completo']) ? $data['budget_data_completo'] : array();
         $accommodation = isset($budget['accommodation']) ? $budget['accommodation'][0] : array();
-        $flights = isset($budget['flights']) ? $budget['flights'] : array();
         $priceInfo = isset($budget['priceInfo']) ? $budget['priceInfo'] : array();
 
-        // Extrair informações de voos
-        $outbound_flight = isset($flights['outboundFlight']) ? $flights['outboundFlight'] : null;
-        $inbound_flight = isset($flights['inboundFlight']) ? $flights['inboundFlight'] : null;
+        // Extrair informações de voos (corrigido: flightServices é um array)
+        $flight_services = isset($budget['flightServices']) ? $budget['flightServices'] : array();
+        $outbound_flight = null;
+        $inbound_flight = null;
+
+        // Procurar voos de ida e volta no array
+        foreach ($flight_services as $flight) {
+            if (isset($flight['type'])) {
+                if ($flight['type'] === 'OUTBOUND') {
+                    $outbound_flight = $flight;
+                } elseif ($flight['type'] === 'INBOUND') {
+                    $inbound_flight = $flight;
+                }
+            }
+        }
 
         ob_start();
         ?>
@@ -1765,55 +1776,83 @@ class Soltour_API {
                     ✈️ 3. Informações de Voos
                 </h2>
 
-                <?php if ($outbound_flight): ?>
+                <?php if ($outbound_flight && isset($outbound_flight['flightSegments']) && !empty($outbound_flight['flightSegments'])):
+                    $segments = $outbound_flight['flightSegments'];
+                    $first_seg = $segments[0];
+                    $last_seg = $segments[count($segments) - 1];
+                ?>
                 <h3 style="color: #555; margin-top: 20px;">🛫 Voo de Ida</h3>
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['airlineName']) ? $first_seg['airlineName'] : (isset($first_seg['airline']) ? $first_seg['airline'] : 'N/A')); ?></td>
+                    </tr>
+                    <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;"><?php echo esc_html(isset($outbound_flight['flightNumber']) ? $outbound_flight['flightNumber'] : 'N/A'); ?></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Data/Hora Saída:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($outbound_flight['departureDate']) ? date('d/m/Y H:i', strtotime($outbound_flight['departureDate'])) : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;"><?php echo esc_html(isset($first_seg['flightNumber']) ? $first_seg['flightNumber'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Data/Hora Chegada:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($outbound_flight['arrivalDate']) ? date('d/m/Y H:i', strtotime($outbound_flight['arrivalDate'])) : 'N/A'); ?></td>
-                    </tr>
-                    <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($outbound_flight['origin']) ? $outbound_flight['origin'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : 'N/A'); ?></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($outbound_flight['destination']) ? $outbound_flight['destination'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? $first_seg['departureTime'] : 'N/A'); ?></td>
                     </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Chegada:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? $last_seg['arrivalTime'] : 'N/A'); ?></td>
+                    </tr>
+                    <?php if (count($segments) > 1): ?>
+                    <tr style="background: #fff3cd;">
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Escalas:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(count($segments) - 1); ?> escala(s)</td>
+                    </tr>
+                    <?php endif; ?>
                 </table>
                 <?php endif; ?>
 
-                <?php if ($inbound_flight): ?>
+                <?php if ($inbound_flight && isset($inbound_flight['flightSegments']) && !empty($inbound_flight['flightSegments'])):
+                    $segments = $inbound_flight['flightSegments'];
+                    $first_seg = $segments[0];
+                    $last_seg = $segments[count($segments) - 1];
+                ?>
                 <h3 style="color: #555; margin-top: 20px;">🛬 Voo de Volta</h3>
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['airlineName']) ? $first_seg['airlineName'] : (isset($first_seg['airline']) ? $first_seg['airline'] : 'N/A')); ?></td>
+                    </tr>
+                    <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;"><?php echo esc_html(isset($inbound_flight['flightNumber']) ? $inbound_flight['flightNumber'] : 'N/A'); ?></td>
-                    </tr>
-                    <tr>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Data/Hora Saída:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($inbound_flight['departureDate']) ? date('d/m/Y H:i', strtotime($inbound_flight['departureDate'])) : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd; font-family: monospace;"><?php echo esc_html(isset($first_seg['flightNumber']) ? $first_seg['flightNumber'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Data/Hora Chegada:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($inbound_flight['arrivalDate']) ? date('d/m/Y H:i', strtotime($inbound_flight['arrivalDate'])) : 'N/A'); ?></td>
-                    </tr>
-                    <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($inbound_flight['origin']) ? $inbound_flight['origin'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : 'N/A'); ?></td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
-                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($inbound_flight['destination']) ? $inbound_flight['destination'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? $first_seg['departureTime'] : 'N/A'); ?></td>
                     </tr>
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Chegada:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? $last_seg['arrivalTime'] : 'N/A'); ?></td>
+                    </tr>
+                    <?php if (count($segments) > 1): ?>
+                    <tr style="background: #fff3cd;">
+                        <td style="padding: 8px; border: 1px solid #ddd;"><strong>Escalas:</strong></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(count($segments) - 1); ?> escala(s)</td>
+                    </tr>
+                    <?php endif; ?>
                 </table>
                 <?php endif; ?>
 
