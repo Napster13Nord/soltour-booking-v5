@@ -1805,8 +1805,8 @@ class Soltour_API {
                     ✈️ 3. Informações de Voos
                 </h2>
 
-                <?php if ($outbound_flight && isset($outbound_flight['flightSegments']) && !empty($outbound_flight['flightSegments'])):
-                    $segments = $outbound_flight['flightSegments'];
+                <?php if ($outbound_flight && isset($outbound_flight['segments']) && !empty($outbound_flight['segments'])):
+                    $segments = $outbound_flight['segments'];
                     $first_seg = $segments[0];
                     $last_seg = $segments[count($segments) - 1];
                 ?>
@@ -1814,7 +1814,7 @@ class Soltour_API {
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['airlineName']) ? $first_seg['airlineName'] : (isset($first_seg['airline']) ? $first_seg['airline'] : 'N/A')); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['carrierName']) ? $first_seg['carrierName'] : (isset($first_seg['carrier']) ? $first_seg['carrier'] : 'N/A')); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
@@ -1822,19 +1822,19 @@ class Soltour_API {
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A'); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? $first_seg['departureTime'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? substr($first_seg['departureTime'], 0, 5) : 'N/A'); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Chegada:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? $last_seg['arrivalTime'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? substr($last_seg['arrivalTime'], 0, 5) : 'N/A'); ?></td>
                     </tr>
                     <?php if (count($segments) > 1): ?>
                     <tr style="background: #fff3cd;">
@@ -1845,8 +1845,8 @@ class Soltour_API {
                 </table>
                 <?php endif; ?>
 
-                <?php if ($inbound_flight && isset($inbound_flight['flightSegments']) && !empty($inbound_flight['flightSegments'])):
-                    $segments = $inbound_flight['flightSegments'];
+                <?php if ($inbound_flight && isset($inbound_flight['segments']) && !empty($inbound_flight['segments'])):
+                    $segments = $inbound_flight['segments'];
                     $first_seg = $segments[0];
                     $last_seg = $segments[count($segments) - 1];
                 ?>
@@ -1854,7 +1854,7 @@ class Soltour_API {
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['airlineName']) ? $first_seg['airlineName'] : (isset($first_seg['airline']) ? $first_seg['airline'] : 'N/A')); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['carrierName']) ? $first_seg['carrierName'] : (isset($first_seg['carrier']) ? $first_seg['carrier'] : 'N/A')); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
@@ -1862,19 +1862,19 @@ class Soltour_API {
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A'); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A'); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? $first_seg['departureTime'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['departureTime']) ? substr($first_seg['departureTime'], 0, 5) : 'N/A'); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Chegada:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? $last_seg['arrivalTime'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['arrivalTime']) ? substr($last_seg['arrivalTime'], 0, 5) : 'N/A'); ?></td>
                     </tr>
                     <?php if (count($segments) > 1): ?>
                     <tr style="background: #fff3cd;">
