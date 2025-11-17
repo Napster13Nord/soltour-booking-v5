@@ -1790,6 +1790,25 @@ class Soltour_API {
             }
         }
 
+        // Função helper para mapear códigos de companhias aéreas
+        $airline_names = array(
+            '2W' => 'World2Fly',
+            'TP' => 'TAP Air Portugal',
+            'IB' => 'Iberia',
+            'UX' => 'Air Europa',
+            'VY' => 'Vueling',
+            'FR' => 'Ryanair',
+            'U2' => 'easyJet',
+            'LH' => 'Lufthansa',
+            'BA' => 'British Airways',
+            'AF' => 'Air France',
+            'KL' => 'KLM'
+        );
+
+        function get_airline_name($code, $airline_names) {
+            return isset($airline_names[$code]) ? $airline_names[$code] : $code;
+        }
+
         ob_start();
         ?>
         <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; background: #f5f5f5; padding: 20px;">
@@ -1875,7 +1894,10 @@ class Soltour_API {
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['carrierName']) ? $first_seg['carrierName'] : (isset($first_seg['carrier']) ? $first_seg['carrier'] : 'N/A')); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php
+                            $carrier_code = isset($first_seg['operatingCompanyCode']) ? $first_seg['operatingCompanyCode'] : (isset($first_seg['carrierCode']) ? $first_seg['carrierCode'] : null);
+                            echo esc_html($carrier_code ? get_airline_name($carrier_code, $airline_names) : 'N/A');
+                        ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
@@ -1883,11 +1905,11 @@ class Soltour_API {
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : (isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A')); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : (isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A')); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
@@ -1915,7 +1937,10 @@ class Soltour_API {
                 <table style="width: 100%; margin: 10px 0; border-collapse: collapse;">
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Companhia:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['carrierName']) ? $first_seg['carrierName'] : (isset($first_seg['carrier']) ? $first_seg['carrier'] : 'N/A')); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php
+                            $carrier_code = isset($first_seg['operatingCompanyCode']) ? $first_seg['operatingCompanyCode'] : (isset($first_seg['carrierCode']) ? $first_seg['carrierCode'] : null);
+                            echo esc_html($carrier_code ? get_airline_name($carrier_code, $airline_names) : 'N/A');
+                        ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Número do Voo:</strong></td>
@@ -1923,11 +1948,11 @@ class Soltour_API {
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Origem:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($first_seg['originAirport']) ? $first_seg['originAirport'] : (isset($first_seg['origin']) ? $first_seg['origin'] : 'N/A')); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Destino:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A'); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($last_seg['destinationAirport']) ? $last_seg['destinationAirport'] : (isset($last_seg['destination']) ? $last_seg['destination'] : 'N/A')); ?></td>
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Horário Partida:</strong></td>
