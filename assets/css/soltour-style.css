@@ -1090,6 +1090,35 @@
 }
 
 @media (max-width: 768px) {
+    /* ===== CORREÇÃO: SLIDER DE IMAGENS - MOBILE ===== */
+    /* Container segue a altura da imagem e não mostra fundo colorido */
+    .soltour-package-card .package-image-slider,
+    .soltour-package-card .slider-images {
+        height: auto !important;
+        min-height: 0 !important;
+        background: transparent !important;
+        padding: 0 !important;
+        overflow: hidden;
+    }
+
+    /* Imagem ocupa só o espaço dela, sem "letterbox" */
+    .soltour-package-card .slider-images img,
+    .soltour-package-card img.slider-image,
+    .soltour-package-card img.slider-image.active {
+        width: 100%;
+        height: auto !important;
+        max-height: none !important;
+        display: block;
+        object-fit: cover;
+    }
+
+    /* Garantir que nenhum elemento interno tenha background colorido */
+    .soltour-package-card .package-image-slider *,
+    .soltour-package-card .slider-images * {
+        background: transparent !important;
+    }
+    /* ===== FIM DA CORREÇÃO ===== */
+
     /* Wrappers principais - EVITAR OVERFLOW HORIZONTAL */
     .soltour-search-wrapper,
     .soltour-results-wrapper,
