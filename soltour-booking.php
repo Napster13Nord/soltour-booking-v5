@@ -53,10 +53,10 @@ if (!defined('SOLTOUR_EMAIL_REPLY_TO')) {
     define('SOLTOUR_EMAIL_REPLY_TO', 'reservas@beautytravel.pt');
 }
 
-// Email de destino da agência (para testes)
-// Trocar de 'andre@wpexperts.pt' para 'reservas@beautytravel.pt' em produção
+// Email de destino da agência
+// Emails de produção: reservas@beautytravel.pt (agência) + andre@wpexperts.pt (acompanhamento)
 if (!defined('SOLTOUR_AGENCY_EMAIL')) {
-    define('SOLTOUR_AGENCY_EMAIL', 'andre@wpexperts.pt');
+    define('SOLTOUR_AGENCY_EMAIL', 'reservas@beautytravel.pt,andre@wpexperts.pt');
 }
 
 // Modo de Teste - Desativado
