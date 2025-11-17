@@ -1,0 +1,350 @@
+/**
+ * Modal de Busca Detalhada - BeautyTravel
+ * Estilo inspirado no modal oficial da Soltour
+ */
+
+/* Overlay e container principal */
+.bt-search-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bt-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+}
+
+.bt-modal-container {
+    position: relative;
+    background: #fff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 520px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Botão fechar */
+.bt-modal-close {
+    position: absolute !important;
+    top: 15px !important;
+    right: 15px !important;
+    width: 40px !important;
+    height: 40px !important;
+    border: none !important;
+    background: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 20px !important;
+    color: #333 !important;
+    transition: all 0.2s !important;
+}
+
+.bt-modal-close:hover {
+    background: #fff !important;
+    transform: rotate(90deg) !important;
+}
+
+/* Header do modal */
+.bt-modal-header {
+    background: linear-gradient(135deg, #019CB8 0%, #0176a8 100%);
+    color: #fff;
+    padding: 30px;
+    text-align: center;
+    position: relative;
+}
+
+.bt-modal-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.bt-modal-title {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 10px 0;
+    line-height: 1.2;
+}
+
+.bt-modal-price {
+    font-size: 18px;
+    opacity: 0.95;
+    margin-top: 8px;
+}
+
+/* Body do modal */
+.bt-modal-body {
+    padding: 30px;
+    max-height: calc(90vh - 180px);
+    overflow-y: auto;
+}
+
+/* Formulário */
+.bt-form-group {
+    margin-bottom: 20px;
+}
+
+.bt-form-group label {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.bt-input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.bt-input-with-icon i {
+    position: absolute;
+    left: 15px;
+    color: #019CB8;
+    font-size: 16px;
+    z-index: 1;
+}
+
+.bt-input-with-icon input,
+.bt-input-with-icon select {
+    width: 100%;
+    padding: 14px 14px 14px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: all 0.2s;
+    background: #fff;
+}
+
+.bt-input-with-icon input:focus,
+.bt-input-with-icon select:focus {
+    outline: none;
+    border-color: #019CB8;
+    box-shadow: 0 0 0 3px rgba(1, 156, 184, 0.1);
+}
+
+.bt-input-with-icon.clickable {
+    cursor: pointer;
+}
+
+.bt-input-with-icon input[readonly] {
+    cursor: pointer;
+    background: #fff;
+}
+
+/* Dropdown de passageiros */
+.bt-dropdown {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 10px;
+}
+
+.bt-pax-config {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.bt-pax-config:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.bt-pax-config label {
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0;
+}
+
+/* Contador */
+.bt-counter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.bt-counter-btn {
+    width: 35px !important;
+    height: 35px !important;
+    border: 2px solid #019CB8 !important;
+    background: #fff !important;
+    color: #019CB8 !important;
+    border-radius: 50% !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.bt-counter-btn:hover {
+    background: #019CB8 !important;
+    color: #fff !important;
+}
+
+.bt-counter input {
+    width: 50px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Checkboxes */
+.bt-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-weight: 400;
+    font-size: 14px;
+    color: #555;
+}
+
+.bt-checkbox-label input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: #019CB8;
+}
+
+/* Nota informativa */
+.bt-modal-note {
+    background: #f0f8ff;
+    border-left: 4px solid #019CB8;
+    padding: 15px;
+    font-size: 13px;
+    color: #555;
+    line-height: 1.6;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+.bt-modal-note i {
+    color: #019CB8;
+    margin-right: 8px;
+}
+
+/* Botão de busca */
+.bt-btn-search {
+    width: 100% !important;
+    background: linear-gradient(135deg, #019CB8 0%, #0176a8 100%) !important;
+    color: #fff !important;
+    border: none !important;
+    padding: 16px !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    border-radius: 8px !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    box-shadow: 0 4px 15px rgba(1, 156, 184, 0.3) !important;
+}
+
+.bt-btn-search:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(1, 156, 184, 0.4) !important;
+}
+
+.bt-btn-search:active {
+    transform: translateY(0) !important;
+}
+
+/* Bloquear scroll do body quando modal aberto */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .bt-modal-container {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .bt-modal-header {
+        padding: 20px;
+    }
+
+    .bt-modal-title {
+        font-size: 26px;
+    }
+
+    .bt-modal-body {
+        padding: 20px;
+    }
+
+    .bt-pax-config {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+/* Scrollbar customizada */
+.bt-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.bt-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.bt-modal-body::-webkit-scrollbar-thumb {
+    background: #019CB8;
+    border-radius: 10px;
+}
+
+.bt-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #0176a8;
+}

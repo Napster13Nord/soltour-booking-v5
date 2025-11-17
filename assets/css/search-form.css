@@ -1,0 +1,401 @@
+/**
+ * Soltour Search Form - Modern & Intuitive Design
+ * Formulário de Busca de Pacotes - Design Moderno e Intuitivo
+ */
+
+/* ========================================
+   CONTAINER PRINCIPAL
+   ======================================== */
+
+.soltour-search-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.soltour-search-container {
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    padding: 40px;
+    transition: all 0.3s ease;
+}
+
+.soltour-search-container:hover {
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.12);
+}
+
+/* ========================================
+   CABEÇALHO DO FORMULÁRIO
+   ======================================== */
+
+.soltour-search-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.soltour-search-header h2 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 12px 0;
+    line-height: 1.2;
+}
+
+.soltour-search-header p {
+    font-size: 16px;
+    color: #6b7280;
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* ========================================
+   GRID DO FORMULÁRIO
+   ======================================== */
+
+.soltour-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* ========================================
+   GRUPOS DE CAMPOS
+   ======================================== */
+
+.soltour-form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.soltour-form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.soltour-form-group label svg {
+    color: #019CB8;
+    flex-shrink: 0;
+}
+
+.soltour-form-group select,
+.soltour-form-group input[type="date"] {
+    padding: 14px 16px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 15px;
+    color: #1f2937;
+    background-color: #ffffff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.soltour-form-group select:hover,
+.soltour-form-group input[type="date"]:hover {
+    border-color: #019CB8;
+    background-color: #f9fafb;
+}
+
+.soltour-form-group select:focus,
+.soltour-form-group input[type="date"]:focus {
+    outline: none;
+    border-color: #019CB8;
+    box-shadow: 0 0 0 4px rgba(1, 156, 184, 0.1);
+    background-color: #ffffff;
+}
+
+.soltour-form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23374151' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 45px;
+}
+
+/* ========================================
+   CONFIGURAÇÃO DE QUARTOS
+   ======================================== */
+
+.soltour-rooms-config {
+    margin-bottom: 30px;
+}
+
+.soltour-room-item {
+    background: #f9fafb;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+
+.soltour-room-item:hover {
+    border-color: #019CB8;
+    background: #ffffff;
+}
+
+.soltour-room-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.soltour-room-header svg {
+    color: #019CB8;
+}
+
+.soltour-room-header h4 {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    margin: 0 !important;
+}
+
+.soltour-room-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* ========================================
+   BOTÃO DE PESQUISA
+   ======================================== */
+
+.soltour-form-actions {
+    margin-top: 30px;
+}
+
+.soltour-btn-search {
+    width: 100% !important;
+    padding: 18px 40px !important;
+    background: linear-gradient(135deg, #019CB8 0%, #017a94 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 100px !important;
+    font-size: 18px !important;
+    font-weight: 400 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    box-shadow: 0 4px 20px rgba(1, 156, 184, 0.3) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* MOBILE – remover GAP no botão */
+@media (max-width: 640px) {
+    .soltour-btn-search {
+        padding: 16px 30px !important;
+        font-size: 16px !important;
+        gap: 0 !important; /* 🔥 Remove o espaço entre ícone e texto */
+    }
+}
+
+.soltour-btn-search:hover {
+    background: linear-gradient(135deg, #017a94 0%, #015a6e 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 30px rgba(1, 156, 184, 0.4) !important;
+}
+
+.soltour-btn-search:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 4px 15px rgba(1, 156, 184, 0.3) !important;
+}
+
+.soltour-btn-search:disabled {
+    opacity: 0.6 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.soltour-btn-search svg {
+    transition: transform 0.3s ease !important;
+}
+
+.soltour-btn-search:hover svg {
+    transform: scale(1.1) !important;
+}
+
+/* ========================================
+   LOADING STATE
+   ======================================== */
+
+.soltour-loading {
+    text-align: center;
+    padding: 30px 20px;
+    color: #6b7280;
+    background: #f9fafb;
+    border-radius: 12px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.soltour-loading .spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #019CB8;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.soltour-loading span:not(.spinner) {
+    font-size: 15px;
+    font-weight: 500;
+    color: #374151;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========================================
+   RESPONSIVIDADE
+   ======================================== */
+
+/* Tablets */
+@media (max-width: 968px) {
+    .soltour-search-container {
+        padding: 30px;
+    }
+
+    .soltour-search-header h2 {
+        font-size: 28px;
+    }
+
+    .soltour-form-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+    .soltour-search-wrapper {
+        padding: 15px;
+    }
+
+    .soltour-search-container {
+        padding: 24px;
+        border-radius: 16px;
+    }
+
+    .soltour-search-header {
+        margin-bottom: 30px;
+    }
+
+    .soltour-search-header h2 {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .soltour-search-header p {
+        font-size: 14px;
+    }
+
+    .soltour-form-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .soltour-form-group label {
+        font-size: 13px;
+    }
+
+    .soltour-form-group select,
+    .soltour-form-group input[type="date"] {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .soltour-btn-search {
+        padding: 16px 30px;
+        font-size: 16px;
+    }
+
+    .soltour-room-item {
+        padding: 20px;
+    }
+
+    .soltour-room-fields {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 480px) {
+    .soltour-search-container {
+        padding: 20px;
+    }
+
+    .soltour-search-header h2 {
+        font-size: 22px;
+    }
+
+    .soltour-btn-search {
+        font-size: 15px;
+        padding: 14px 24px;
+    }
+}
+
+/* ========================================
+   ACESSIBILIDADE
+   ======================================== */
+
+/* Foco visível para navegação por teclado */
+.soltour-form-group select:focus-visible,
+.soltour-form-group input[type="date"]:focus-visible,
+.soltour-btn-search:focus-visible {
+    outline: 3px solid #019CB8;
+    outline-offset: 2px;
+}
+
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+    .soltour-form-group select,
+    .soltour-form-group input[type="date"] {
+        border-width: 3px;
+    }
+
+    .soltour-btn-search {
+        border: 3px solid #015a6e;
+    }
+}
+
+/* Reduzir animações para quem prefere */
+@media (prefers-reduced-motion: reduce) {
+    .soltour-search-container,
+    .soltour-form-group select,
+    .soltour-form-group input[type="date"],
+    .soltour-btn-search,
+    .soltour-room-item,
+    .soltour-btn-search svg {
+        transition: none;
+    }
+
+    .soltour-loading .spinner {
+        animation: none;
+    }
+}
