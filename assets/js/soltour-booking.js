@@ -76,8 +76,9 @@
      * @param {string} title - Título do modal (opcional)
      * @param {string} message - Mensagem do modal (opcional)
      * @param {boolean} rotateMessages - Se true, rotaciona mensagens de busca (padrão: false)
+     * @param {boolean} showTimeInfo - Se true, mostra mensagem de tempo de espera (padrão: false)
      */
-    function showLoadingModal(title, message, rotateMessages) {
+    function showLoadingModal(title, message, rotateMessages, showTimeInfo) {
         const modal = $('#soltour-loading-modal');
 
         if (modal.length) {
@@ -87,6 +88,13 @@
             }
             if (message) {
                 $('#loading-modal-message').text(message);
+            }
+
+            // Mostrar ou ocultar mensagem de tempo de espera
+            if (showTimeInfo === true) {
+                $('.loading-time-info').show();
+            } else {
+                $('.loading-time-info').hide();
             }
 
             // Mostrar modal com animação
@@ -544,7 +552,8 @@
             showLoadingModal(
                 'Buscando os melhores pacotes...',
                 'Encontraremos as melhores opções para sua viagem',
-                true  // Ativar rotação de mensagens a cada 7 segundos
+                true,  // Ativar rotação de mensagens a cada 7 segundos
+                true   // Mostrar mensagem de tempo de espera (30-45 segundos)
             );
 
             SoltourApp.searchParams = JSON.parse(savedParams);
