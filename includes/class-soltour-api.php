@@ -1697,9 +1697,27 @@ class Soltour_API {
         } elseif (isset($budget['flights'])) {
             $this->log('Encontrado flights em budget');
             $flight_services = $budget['flights'];
+        } elseif (isset($budget['services'])) {
+            $this->log('Encontrado services em budget - filtrando por tipo FLIGHT');
+            // Filtrar apenas serviços de voo
+            $all_services = $budget['services'];
+            foreach ($all_services as $service) {
+                if (isset($service['type']) && $service['type'] === 'FLIGHT') {
+                    $flight_services[] = $service;
+                }
+            }
         } elseif (isset($budget['budget']) && isset($budget['budget']['flightServices'])) {
             $this->log('Encontrado flightServices em budget.budget');
             $flight_services = $budget['budget']['flightServices'];
+        } elseif (isset($budget['budget']) && isset($budget['budget']['services'])) {
+            $this->log('Encontrado services em budget.budget - filtrando por tipo FLIGHT');
+            // Filtrar apenas serviços de voo
+            $all_services = $budget['budget']['services'];
+            foreach ($all_services as $service) {
+                if (isset($service['type']) && $service['type'] === 'FLIGHT') {
+                    $flight_services[] = $service;
+                }
+            }
         }
 
         $this->log('Flight services count: ' . (is_array($flight_services) ? count($flight_services) : '0 (não é array)'));
@@ -1714,13 +1732,27 @@ class Soltour_API {
         // Procurar voos de ida e volta no array
         if (is_array($flight_services)) {
             foreach ($flight_services as $flight) {
+                // Tentar diferentes possíveis campos para identificar o tipo de voo
+                $flight_type = null;
+
                 if (isset($flight['type'])) {
-                    $this->log('Voo encontrado com type: ' . $flight['type']);
-                    if ($flight['type'] === 'OUTBOUND') {
+                    $flight_type = $flight['type'];
+                } elseif (isset($flight['direction'])) {
+                    $flight_type = $flight['direction'];
+                } elseif (isset($flight['flightType'])) {
+                    $flight_type = $flight['flightType'];
+                }
+
+                if ($flight_type) {
+                    $this->log('Voo encontrado com tipo: ' . $flight_type);
+                    if ($flight_type === 'OUTBOUND' || $flight_type === 'outbound') {
                         $outbound_flight = $flight;
-                    } elseif ($flight['type'] === 'INBOUND') {
+                    } elseif ($flight_type === 'INBOUND' || $flight_type === 'inbound') {
                         $inbound_flight = $flight;
                     }
+                } else {
+                    // Se não encontrar o tipo, logar a estrutura do voo para debug
+                    $this->log('Voo sem tipo identificável. Keys: ' . implode(', ', array_keys($flight)));
                 }
             }
         }
@@ -1780,7 +1812,7 @@ class Soltour_API {
                     </tr>
                     <tr style="background: #f9fafb;">
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Quarto:</strong></td>
-                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($accommodation['roomName']) ? $accommodation['roomName'] : $data['viagem']['quartos']); ?></td>
+                        <td style="padding: 8px; border: 1px solid #ddd;"><?php echo esc_html(isset($accommodation['roomName']) ? $accommodation['roomName'] : (isset($data['viagem']['roomName']) ? $data['viagem']['roomName'] : $data['viagem']['quartos'] . ' quarto(s)')); ?></td>
                     </tr>
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ddd;"><strong>Regime:</strong></td>
@@ -1977,13 +2009,6 @@ class Soltour_API {
                     <?php echo nl2br(esc_html($data['observacoes'])); ?>
                 </div>
                 <?php endif; ?>
-
-                <p style="text-align: center; margin-top: 40px;">
-                    <a href="<?php echo esc_url($data['linkCotacao']); ?>"
-                       style="background: #019CB8; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
-                        Ver Cotação no WordPress
-                    </a>
-                </p>
             </div>
 
             <div style="background: #1a202c; color: white; padding: 20px; text-align: center; font-size: 12px; margin-top: 2px;">
